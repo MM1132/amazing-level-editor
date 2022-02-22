@@ -1,6 +1,7 @@
 import pygame
 from Button import Button
 from FileBrowser import FileBrowser
+from TextBox import TextBox
 class Menu:
     def __init__(self):
         # The current state and the background of the menu
@@ -11,7 +12,7 @@ class Menu:
         self.elements = {
             0: [Button("Create new", 2, ["centered", 300]), Button("Load level", 1, ["centered", 400]), Button("Exit", "quit", ["centered", 500])],
             1: [FileBrowser("./saves/", ".map", ["centered", 200]), Button("Back", 0, ["centered", 800])],
-            2: [Button("Back", 0, ["centered", 800])]
+            2: [TextBox(60, ["centered", 300]), Button("Create", "createNew", ["centered", 750]), Button("Back", 0, ["centered", 800])]
         }
 
     # Render all of menu
@@ -27,6 +28,12 @@ class Menu:
             if event.type == pygame.QUIT:
                 return "quit"
             if event.type == pygame.KEYDOWN:
+                # If we have a textbox in our current state, update it
+                for i in self.elements[self.state]:
+                    if type(i) == TextBox:
+                        i.update(event)
+
+                # Quit the manu if escape is pressed
                 if event.key == pygame.K_ESCAPE:
                     return "quit"
 
@@ -39,6 +46,12 @@ class Menu:
                                 if type(i.returnValue) == int:
                                     self.state = i.returnValue
                                 elif type(i.returnValue) == str:
+                                    if i.returnValue == "createNew":
+                                        for i in self.elements[self.state]:
+                                            if type(i) == TextBox:
+                                                # Clear the textBox from text
+                                                saveFile = i.text; i.text = ""
+                                                return "./saves/" + saveFile + ".map"
                                     return i.returnValue
                         elif type(i) == FileBrowser:
                             for j in i.elements:

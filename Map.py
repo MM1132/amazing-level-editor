@@ -1,5 +1,6 @@
 import pygame
 from Tile import Tile
+from glob import glob
 
 # Weather there is a tile at the specifiead coords or not...
 def tileInPos(tiles, pos):
@@ -14,12 +15,19 @@ class Map:
     # Load in the whole map from the provided file
     def __init__(self, file):
         self.file = file
-        with open(self.file, "r") as f:
-            info = [list(map(int, i.strip().split(" "))) for i in f]
-        self.tiles = []
-        if info != []:
-            self.tiles = [Tile([i[0], i[1]], i[2], i[3]) for i in info]
-        del info
+
+        # If the saveFile already exists, just read it
+        if file in glob("./saves/*.map"):
+            with open(self.file, "r") as f:
+                info = [list(map(int, i.strip().split(" "))) for i in f]
+            self.tiles = []
+            if info != []:
+                self.tiles = [Tile([i[0], i[1]], i[2], i[3]) for i in info]
+            del info
+        # If the saveFile doesn't exist, create it (:
+        else:
+            with open(self.file, "w") as f:
+                self.tiles = []
 
         self.offset = [35, 15]
         self.mouse = [0, 0]

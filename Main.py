@@ -63,10 +63,12 @@ while running:
     elif type(event) == str and event[-4:] == ".map":
         state = game_state
         map = Map(event)
+        menu = None
     elif event == "back":
         state = menu_state
         map.save()
         map = None
+        menu = Menu()
 
     pygame.display.update()
 pygame.quit()
