@@ -3,12 +3,14 @@ from TileType import TILES
 class Inventory:
     def __init__(self):
         # surface is the dark transparent background of the inventory
-        self.surface = pygame.Surface((1920, 1080))
-        self.surface.set_alpha(200)
+        self.surface = pygame.Surface((1920, 1080)).convert_alpha()
+        self.surface.fill((0, 0, 0, 200))
         # Weather the invenroy is currenty open or not
         self.open = False
         # The tile that is currenty selected
         self.selection = [0, 0]
+
+        self.enlargenedTiles = [[pygame.transform.scale(j, (100, 100)) for j in i[0]]for i in TILES]
 
     # This static function draws a box :D
     def drawBox(window, color, pos, lineWidth):
@@ -25,10 +27,11 @@ class Inventory:
         # Inventory.drawBox(window, (0, 0, 255), (85+self.selection[1]*150-5, 85+self.selection[0]*150-5, 110, 110), 5)
 
         position = [0, 0]
-        for i in range(len(TILES)):
-            for j in range(len(TILES[i])):
+        for i in range(len(self.enlargenedTiles)):
+            for j in range(len(self.enlargenedTiles[i])):
                 # Draw the tiles texture
-                window.blit(pygame.transform.scale(TILES[i][j], (100, 100)), (85 + position[0] * 150, 85 + position[1] * 150))
+                window.blit(self.enlargenedTiles[i][j], (85 + position[0] * 150, 85 + position[1] * 150))
+
                 # Draw box around selection
                 if self.selection == [i, j]:
                     Inventory.drawBox(window, (0, 0, 255), (85+position[0]*150-5, 85+position[1]*150-5, 110, 110), 5)
@@ -47,8 +50,8 @@ class Inventory:
     def changeSelection(self):
         position = [0, 0]
         mouse = pygame.mouse.get_pos()
-        for i in range(len(TILES)):
-            for j in range(len(TILES[i])):
+        for i in range(len(self.enlargenedTiles)):
+            for j in range(len(self.enlargenedTiles[i])):
                 if mouse[0] > 85 + position[0] * 150 and mouse[0] < 85 + 100 + position[0] * 150:
                     if mouse[1] > 85 + position[1] * 150 and mouse[1] < 85 + 100 + position[1] * 150:
                         self.selection = [i, j]

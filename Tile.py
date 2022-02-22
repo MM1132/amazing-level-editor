@@ -10,6 +10,9 @@ class Tile:
         self.type = type
         self.texture = texture
 
+        # TIles own offset
+        self.offset = TILES[type][1]
+
     # This function renders a tile onto the map
-    def render(self, window, offset):
-        window.blit(TILES[self.type][self.texture], tuple([self.renderPos[0]+offset[0], self.renderPos[1]+offset[1]]))
+    def render(self, window, camOffset):
+        window.blit(TILES[self.type][0][self.texture], tuple([self.renderPos[0]+camOffset[0]+self.offset[0], self.renderPos[1]+camOffset[1]+self.offset[1]]))
