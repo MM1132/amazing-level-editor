@@ -5,6 +5,12 @@ class Input:
         # Weather the middle mouse button is being pressed or not
         self.middle = False
 
+        # If the left mouse button is being pressed or not
+        self.leftClick = False
+
+        # If the left mouse button is being pressed or not
+        self.rightClick = False
+
     # Here we get all input from the user
     def get_event(self):
         for event in pygame.event.get():
@@ -29,10 +35,10 @@ class Input:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Left click
                 if event.button == 1:
-                    return 1
+                    self.leftClick = True
                 # Right click
                 elif event.button == 3:
-                    return 3
+                    self.rightClick = True
                 # Middle click
                 elif event.button == 2:
                     self.middle = True
@@ -40,3 +46,7 @@ class Input:
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 2:
                     self.middle = False
+                elif event.button == 1:
+                    self.leftClick = False
+                elif event.button == 3:
+                    self.rightClick = False

@@ -31,7 +31,10 @@ class Menu:
                 # If we have a textbox in our current state, update it
                 for i in self.elements[self.state]:
                     if type(i) == TextBox:
-                        i.update(event)
+                        # If enter was presed, create new level with the name
+                        if i.update(event):
+                            saveFile = i.text; i.text = ""
+                            return "./saves/" + saveFile + ".map"
 
                 # Quit the manu if escape is pressed
                 if event.key == pygame.K_ESCAPE:

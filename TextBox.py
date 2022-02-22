@@ -30,6 +30,9 @@ class TextBox:
         # If the key is backspace, delete the last character of the text
         if event.key == pygame.K_BACKSPACE:
             self.text = self.text[:-1]
+        # If enter key is pressed: create the level
+        elif event.key == pygame.K_RETURN:
+            return True
         # Else, just add the shit to the text
         else:
             self.text += event.unicode
