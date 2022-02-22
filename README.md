@@ -1,2 +1,4 @@
-# amazing-level-editor
-A simple level editor I made with Python and its awesome Pygame module. Enjoy! &lt;3
+# Robert Reimann
+# 6th March, 2019
+
+### A simple and fun level editor project, using the `pygame` module. 
