@@ -13,40 +13,46 @@ from Inventory import Inventory
 
 # Create objects for the classes
 input = Input()
-activeObject = Menu()
+menu = Menu()
+map = None
 inventory = Inventory()
 
 # This will be running only when menu_state is active
 def menu_state():
-    event = activeObject.getInput()
+    event = menu.getInput()
     if event == "quit": return False
     elif type(event) == str and event[-4:] == ".map":
         return event
-    activeObject.render(window)
+    menu.render(window)
 
 # This will be running only when game_state is active
 def game_state():
     event = input.get_event()
     if event == "quit": return False
     elif event == "back": return "back"
-    elif input.leftClick:
+    elif event == 1:
         if inventory.open:
             inventory.changeSelection()
         else:
-            activeObject.placeTile(inventory.selection)
-    elif input.rightClick:
+            map.placeTile(inventory.selection)
+    elif event == 3:
         if not inventory.open:
-            activeObject.removeTile()
+            map.removeTile()
     elif event == "space":
-        activeObject.centerCamera()
+        map.centerCamera()
     elif event == "invOpen":
         inventory.open = True
     elif event == "invClosed":
         inventory.open = False
+    elif event == "carelessPlace":
+        map.toggleCarelessPlace()
     window.fill((255, 255, 255))
 
-    activeObject.update(input.middle)
-    activeObject.render(window)
+    map.update(input.middle)
+    map.render(window)
+
+    if input.tileNumbers:
+        map.renderTileNumbers(window)
 
     if inventory.open:
         inventory.render(window)
@@ -61,11 +67,13 @@ while running:
     if event == False: running = False
     elif type(event) == str and event[-4:] == ".map":
         state = game_state
-        activeObject = Map(event)
+        map = Map(event)
+        menu = None
     elif event == "back":
         state = menu_state
-        activeObject.save()
-        activeObject = Menu()
+        map.save()
+        map = None
+        menu = Menu()
 
     pygame.display.update()
 pygame.quit()

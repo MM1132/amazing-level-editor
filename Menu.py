@@ -6,7 +6,15 @@ class Menu:
     def __init__(self):
         # The current state and the background of the menu
         self.state = 0
-        self.background = pygame.image.load("./resources/images/forest.png").convert()
+
+        # Get and set background
+        with open("./resourcepacks/resourcepack.cfg", "r") as f:
+            # Get all the settings for the resourcepack from the config file
+            settings = [i.strip().split("=") for i in f]
+            for i in range(len(settings)):
+                if settings[i][0] == "resourcepack":
+                    pack = settings[i][1]
+        self.background = pygame.image.load("./resourcepacks/" + pack + "/forest.png").convert()
 
         # Configure manu's elements (buttons, file browers, etc..)
         self.elements = {
@@ -31,10 +39,7 @@ class Menu:
                 # If we have a textbox in our current state, update it
                 for i in self.elements[self.state]:
                     if type(i) == TextBox:
-                        # If enter was presed, create new level with the name
-                        if i.update(event):
-                            saveFile = i.text; i.text = ""
-                            return "./saves/" + saveFile + ".map"
+                        i.update(event)
 
                 # Quit the manu if escape is pressed
                 if event.key == pygame.K_ESCAPE:

@@ -5,11 +5,7 @@ class Input:
         # Weather the middle mouse button is being pressed or not
         self.middle = False
 
-        # If the left mouse button is being pressed or not
-        self.leftClick = False
-
-        # If the left mouse button is being pressed or not
-        self.rightClick = False
+        self.tileNumbers = False
 
     # Here we get all input from the user
     def get_event(self):
@@ -27,6 +23,15 @@ class Input:
                 # Open inventory
                 elif event.key == pygame.K_e:
                     return "invOpen"
+                # CarelessPlace
+                elif event.key == pygame.K_w:
+                    return "carelessPlace"
+                # Tile Number
+                elif event.key == pygame.K_r:
+                    if self.tileNumbers:
+                        self.tileNumbers = False
+                    else:
+                        self.tileNumbers = True
             elif event.type == pygame.KEYUP:
                 # Close inventory :(
                 if event.key == pygame.K_e:
@@ -35,10 +40,10 @@ class Input:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Left click
                 if event.button == 1:
-                    self.leftClick = True
+                    return 1
                 # Right click
                 elif event.button == 3:
-                    self.rightClick = True
+                    return 3
                 # Middle click
                 elif event.button == 2:
                     self.middle = True
@@ -46,7 +51,3 @@ class Input:
             elif event.type == pygame.MOUSEBUTTONUP:
                 if event.button == 2:
                     self.middle = False
-                elif event.button == 1:
-                    self.leftClick = False
-                elif event.button == 3:
-                    self.rightClick = False
