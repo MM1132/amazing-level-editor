@@ -21,7 +21,7 @@ class Map:
             self.tiles = [Tile([i[0], i[1]], i[2], i[3]) for i in info]
         del info
 
-        self.offset = [0, 0]
+        self.offset = [35, 15]
         self.mouse = [0, 0]
 
     # Change the offset of the tiles if middle click gets pressed...
@@ -41,11 +41,15 @@ class Map:
     def render(self, window):
         for i in self.tiles:
             i.render(window, self.offset)
+        pygame.draw.rect(window, (0, 0, 0), (self.offset[0], self.offset[1], 1850, 1050), 2)
 
     # Place down a tile into the fucking map
     def placeTile(self, selection):
         mouse = [(pygame.mouse.get_pos()[0] - self.offset[0]) // 50, (pygame.mouse.get_pos()[1] - self.offset[1]) // 50]
-        if not tileInPos(self.tiles, mouse):
+        # If the coords aren't outside of the maps area
+        if mouse[0] > -1 and mouse[0] < 37 and mouse[1] > -1 and mouse[1] < 21:
+            if tileInPos(self.tiles, mouse):
+                self.removeTile()
             self.tiles.append(Tile(mouse, selection[0], selection[1]))
 
     # Remove a tile at mouses coordinates

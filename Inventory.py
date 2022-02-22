@@ -22,19 +22,35 @@ class Inventory:
         window.blit(self.surface, (0, 0))
 
         # Draw a box around the tile that is currently selected
-        Inventory.drawBox(window, (0, 0, 255), (100+self.selection[1]*150-5, 100+self.selection[0]*150-5, 110, 110), 5)
+        # Inventory.drawBox(window, (0, 0, 255), (85+self.selection[1]*150-5, 85+self.selection[0]*150-5, 110, 110), 5)
 
+        position = [0, 0]
         for i in range(len(TILES)):
             for j in range(len(TILES[i])):
-                window.blit(pygame.transform.scale(TILES[i][j], (100, 100)), (100+j*150, 100+i*150))
-                if pygame.mouse.get_pos()[0] > 100+j*150 and pygame.mouse.get_pos()[0] < 200+j*150:
-                    if pygame.mouse.get_pos()[1] > 100+i*150 and pygame.mouse.get_pos()[1] < 200+i*150:
-                        Inventory.drawBox(window, (255, 0, 0), (100+j*150-5, 100+i*150-5, 110, 110), 5)
+                # Draw the tiles texture
+                window.blit(pygame.transform.scale(TILES[i][j], (100, 100)), (85 + position[0] * 150, 85 + position[1] * 150))
+                # Draw box around selection
+                if self.selection == [i, j]:
+                    Inventory.drawBox(window, (0, 0, 255), (85+position[0]*150-5, 85+position[1]*150-5, 110, 110), 5)
 
-    # If mouse is over a tile, select that tile :D
+                # Draw the mouseOver effect box to tiles
+                mouse = pygame.mouse.get_pos()
+                if mouse[0] > 85 + position[0] * 150 and mouse[0] < 85 + 100 + position[0] * 150:
+                    if mouse[1] > 85 + position[1] * 150 and mouse[1] < 85 + 100 + position[1] * 150:
+                        Inventory.drawBox(window, (255, 0, 0), (85 + position[0] * 150-5, 85 + position[1] * 150-5, 110, 110), 5)
+
+                # Update the position of the render so we can move to the next tile and render that on the next run of the loop
+                position[0] += 1
+                if position[0] > 11: position[0] = 0; position[1] += 1
+
+    # If mouse is over a tile, select that tile in the inventory :D
     def changeSelection(self):
+        position = [0, 0]
+        mouse = pygame.mouse.get_pos()
         for i in range(len(TILES)):
             for j in range(len(TILES[i])):
-                if pygame.mouse.get_pos()[0] > 100+j*150 and pygame.mouse.get_pos()[0] < 200+j*150:
-                    if pygame.mouse.get_pos()[1] > 100+i*150 and pygame.mouse.get_pos()[1] < 200+i*150:
+                if mouse[0] > 85 + position[0] * 150 and mouse[0] < 85 + 100 + position[0] * 150:
+                    if mouse[1] > 85 + position[1] * 150 and mouse[1] < 85 + 100 + position[1] * 150:
                         self.selection = [i, j]
+                position[0] += 1
+                if position[0] > 11: position[0] = 0; position[1] += 1

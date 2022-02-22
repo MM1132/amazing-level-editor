@@ -39,7 +39,7 @@ def game_state():
         if not inventory.open:
             map.removeTile()
     elif event == "space":
-        map.offset = [0, 0]
+        map.offset = [35, 15]
     elif event == "invOpen":
         inventory.open = True
     elif event == "invClosed":

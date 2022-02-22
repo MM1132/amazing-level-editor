@@ -13,9 +13,16 @@ def getTexture(file, size, alpha, resourcepack):
     return part
 
 TILES = []
-# Lets load all the tiles in and save the into the TILES variable :D
-with open("./config.cfg") as f:
-    for i in f:
-        if i.split("=")[0] == "resourcepack":
-            for j in ["dirt", "stone"]:
-                TILES.append(getTexture(j, 50, (0, 38, 255, 255), i.split("=")[1]))
+# Lets load all the tiles in and save them into the TILES variable :D
+with open("./resourcepacks/resourcepack.cfg", "r") as f:
+    # Get all the settings for the resourcepack from the config file
+    settings = [i.strip().split("=") for i in f]
+    for i in range(len(settings)):
+        if settings[i][0] == "resourcepack":
+            pack = settings[i][1]
+        elif settings[i][0] == "tiles":
+            tiles = eval(settings[i][1])
+
+    # Set all the TILES
+    for j in tiles:
+        TILES.append(getTexture(j, 50, (0, 38, 255), pack))
